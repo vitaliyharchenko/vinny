@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script
+            type="text/javascript"
+            src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+        ></script>
+        <style>
+            #mynetwork {
+                width: 1000px;
+                height: 800px;
+                border: 1px solid lightgray;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Граф</h1>
+        <p>{{graph}}</p>
+
+        <div id="mynetwork"></div>
+
+        <script>
+            const vis_graph = {{ graph|safe }}
+
+            // create an array with nodes
+            var nodes = new vis.DataSet(vis_graph.nodes);
+
+            // create an array with edges
+            var edges = new vis.DataSet(vis_graph.links);
+
+
+            // create a network
+            var container = document.getElementById("mynetwork");
+            var data = {
+                nodes: nodes,
+                edges: edges,
+            };
+            var options = {
+                layout: {
+                hierarchical: {
+                    direction: "UD",
+                    sortMethod: "directed",
+                    nodeSpacing: 300,
+                }
+            },
+
+            };
+            var network = new vis.Network(container, data, options);
+        </script>
+    </body>
+</html>
