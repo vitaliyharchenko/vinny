@@ -6,46 +6,137 @@
             src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
         ></script>
         <style>
-            #mynetwork {
-                width: 1000px;
-                height: 800px;
+            .container {
+                width: 33%;
+                float: left;
+            }
+            .graph_container {
+                width: 100%;
+                height: 500px;
+                float: left;
                 border: 1px solid lightgray;
             }
         </style>
     </head>
     <body>
-        <h1>Граф</h1>
-        <p>{{graph}}</p>
+        <h1>Граф по теме "Квадратные уравлнения"</h1>
 
-        <div id="mynetwork"></div>
+        <div style="width: 100%">
+            <div class="container">
+                <p>Граф методиста</p>
+                <div id="graph" class="graph_container"></div>
+                <p>
+                    Громоздкая, но выверенная структура, может быть сложна в
+                    поддержке и диалоге
+                </p>
+            </div>
+            <div class="container">
+                <p>Граф от GPT с долгой беседой</p>
+                <div id="graph_gpt" class="graph_container"></div>
+                <p>
+                    Тут уже лучше, обученный ассистент дает хорошие результаты
+                    после споров
+                </p>
+            </div>
+            <div class="container">
+                <p>Граф от GPT по одному промту</p>
+                <div id="graph_gpt_1" class="graph_container"></div>
+                <p>
+                    Интересно, что были найдены необычные способы решения
+                    уравнений
+                </p>
+            </div>
+        </div>
 
         <script>
-            const vis_graph = {{ graph|safe }}
+            const colorForType = function (type) {
+                switch (type) {
+                    case 'KN':
+                        return '#E47961';
+                    case 'UN':
+                        return '#F4C747';
+                    case 'CS':
+                        return '#FEF267';
+                    case 'SK':
+                        return '#9ECD62';
+                    default:
+                        return 'black';  // Возвращается, если ни один случай не подходит
+                }
+            };
 
-            // create an array with nodes
-            var nodes = new vis.DataSet(vis_graph.nodes);
+            const processNodes = function(nodes_array) {
+                for (let n of nodes_array) {
+                    n["title"] = n["title"] + " " + n["id"] + " " + n["type"]
+                    n["color"] = colorForType(n["type"]);
+                }
+                return nodes_array
+            }
 
-            // create an array with edges
-            var edges = new vis.DataSet(vis_graph.links);
+            var options = {
+                layout: {
+                    hierarchical: {
+                        enabled: true,
+                        levelSeparation: 150,  // Расстояние между уровнями
+                        nodeSpacing: 300,      // Расстояние между узлами
+                        treeSpacing: 200,      // Расстояние между разными деревьями в графе
+                        direction: 'UD',       // Направление: UD - сверху вниз
+                        sortMethod: 'directed' // Метод сортировки: directed для направленных графов
+                    }
+                },
+                nodes: {
+                    shape: 'dot',         // Форма вершин - круг
+                    size: 20,                // Размер вершин
+                    font: {
+                        size: 16             // Размер шрифта подписей
+                    }
+                },
+                edges: {
+                    arrows: {
+                        to: {enabled: true, scaleFactor:1.2}  // Стрелки на концах рёбер
+                    },
+                    smooth: {
+                        type: 'cubicBezier', // Тип кривой для рёбер
+                        forceDirection: 'vertical',
+                        roundness: 0.4
+                    }
+                },
+                physics: {
+                    enabled: false          // Отключение физики для стабильного расположения узлов
+                }
+            };
 
-
-            // create a network
-            var container = document.getElementById("mynetwork");
+            // Graph from server
+            const graph = {{ graph|safe }}
+            var nodes = new vis.DataSet(processNodes(graph.nodes));
+            var edges = new vis.DataSet(graph.links);
             var data = {
                 nodes: nodes,
                 edges: edges,
             };
-            var options = {
-                layout: {
-                hierarchical: {
-                    direction: "UD",
-                    sortMethod: "directed",
-                    nodeSpacing: 300,
-                }
-            },
+            var graph_container = document.getElementById("graph");
+            var network = new vis.Network(graph_container, data, options);
 
+            // Graph from GPT
+            const graph_gpt = {{ graph_gpt|safe }}
+            var nodes_gpt = new vis.DataSet(processNodes(graph_gpt.nodes));
+            var edges_gpt = new vis.DataSet(graph_gpt.links);
+            var data_gpt = {
+                nodes: nodes_gpt,
+                edges: edges_gpt,
             };
-            var network = new vis.Network(container, data, options);
+            var graph_gpt_container = document.getElementById("graph_gpt");
+            var network_gpt = new vis.Network(graph_gpt_container, data_gpt, options);
+
+            // Graph from 1 prompt
+            const graph_gpt_1 = {{ graph_gpt_1|safe }}
+            var nodes_gpt_1 = new vis.DataSet(processNodes(graph_gpt_1.nodes));
+            var edges_gpt_1 = new vis.DataSet(graph_gpt_1.links);
+            var data_gpt_1 = {
+                nodes: nodes_gpt_1,
+                edges: edges_gpt_1,
+            };
+            var graph_gpt_1_container = document.getElementById("graph_gpt_1");
+            var network_gpt_1 = new vis.Network(graph_gpt_1_container, data_gpt_1, options);
         </script>
     </body>
 </html>

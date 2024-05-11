@@ -1,6 +1,24 @@
 from django.db import models
 
 
+class Concept(models.Model):
+    """
+    Большая тема, объединяющая несколько вершин в подграф
+    Пример: Квадратные уравнения
+    """
+    title = models.CharField(
+        verbose_name='Концепт',
+        max_length=300)
+
+    class Meta:
+        verbose_name = 'концепт'
+        verbose_name_plural = 'концепты'
+
+    def __str__(self):
+        return str(self.title)
+
+
+
 # Типы вершин графа
 KNOW = 'KN'
 UNDERSTAND = 'UN'
@@ -32,12 +50,19 @@ class Node(models.Model):
         verbose_name="Проверяемая?"
     )
 
+    concept = models.ForeignKey(
+        Concept,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+
     class Meta:
         verbose_name = 'вершина графа'
         verbose_name_plural = 'вершины графа'
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.title} ({self.pk}, {self.type})"
 
 
 class NodeRelation(models.Model):
