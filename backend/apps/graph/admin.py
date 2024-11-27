@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import GraphNode
 
-# Register your models here.
+
+@admin.register(GraphNode)
+class GraphNodeAdmin(admin.ModelAdmin):
+    search_fields = ["title"]
+    list_filter = ["node_type"]

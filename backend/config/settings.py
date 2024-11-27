@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # MyApps
     'apps.graph',
     'apps.users',
+    'apps.test',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -156,9 +157,19 @@ CKEDITOR_ALLOW_NONIMAGE_FILES = False
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'Full',
-        'extraPlugins': ','.join(['mathjax']),
-        'mathJaxLib': 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'RemoveFormat'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
+                'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            {'name': 'insert', 'items': ['Image', 'Table', 'Link', 'Unlink']},
+            {'name': 'math', 'items': ['Mathjax']},
+            {'name': 'clipboard', 'items': [
+                'Copy', 'Paste', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            ['Source'],
+        ],
+        'extraPlugins': ','.join(['mathjax', 'tabletools', 'image', 'image2', 'uploadimage']),
+        'mathJaxLib': '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML',
     },
 }
 
