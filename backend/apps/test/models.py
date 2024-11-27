@@ -29,7 +29,6 @@ class QuestionType:
 QUESTION_TYPE_CHOICES = [
     (QuestionType.STRING, 'Обычная проверка строки'),
     (QuestionType.FLOAT, 'Проверка числа'),
-    (QuestionType.FLOAT_TOLERANCE, 'Проверка числа с погрешностью'),
     (QuestionType.ORDERED_SET, 'Набор символов в строгом порядке'),
     (QuestionType.UNORDERED_SET, 'Набор символов в случайном порядке'),
     (QuestionType.SINGLE_CHOICE, 'Выбор одного верного ответа'),
@@ -49,7 +48,8 @@ class Question(models.Model):
     )
 
     # все про проверку
-    tolerance = models.FloatField(null=True, blank=True)
+    tolerance = models.FloatField(
+        null=True, blank=True, verbose_name='допустимая погрешность (для численного ответа)', default=0)
     checking_policy = models.SmallIntegerField(
         verbose_name='Политика проверки заданий',
         choices=POLICY_CHOICES,
@@ -58,7 +58,7 @@ class Question(models.Model):
 
     # привязка к графу
     graph_nodes = models.ManyToManyField(
-        'graph.GraphNode', related_name='questions', blank=True)
+        'graph.GraphNode', verbose_name='привязан к вершинам графа:', related_name='questions', blank=True)
 
     class Meta:
         verbose_name = 'задание'

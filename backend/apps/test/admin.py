@@ -10,4 +10,5 @@ class QuestionOptionInline(admin.TabularInline):
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'question_type')
+    autocomplete_fields = ['graph_nodes']
     inlines = [QuestionOptionInline]
