@@ -27,4 +27,11 @@ docker-compose exec backend python manage.py collectstatic
 
 http://localhost:3000/ - фронтенд
 http://localhost:8000/admin/ - админка django
+http://localhost:8000/graph/ - граф через API
 http://0.0.0.0:8000 - доступ через nginx (если он подключен в docker-compose для продакшна)
+
+# Полезные команды
+
+manage.py dumpdata --exclude auth.permission --exclude contenttypes > fixture.json - создание фикстур
+
+manage.py loaddata fixture.json - загрузка фикстур

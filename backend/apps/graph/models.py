@@ -17,9 +17,14 @@ TYPE_CHOICES = [
 
 class GraphNode(models.Model):
     title = models.CharField("Название узла", max_length=200)
-    description = models.TextField(verbose_name='Комментарий методиста')
+    description = models.TextField(
+        verbose_name='Комментарий методиста', blank=True, null=True)
     node_type = models.CharField(
         max_length=2, choices=TYPE_CHOICES, verbose_name='тип узла')
+    testability = models.BooleanField(
+        default=True,
+        verbose_name="Проверяемая?"
+    )
 
     subjects = models.ManyToManyField(
         Subject,
