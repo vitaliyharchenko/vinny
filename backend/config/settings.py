@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.graph',
     'apps.users',
     'apps.test',
+    'apps.methodics'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

@@ -1,6 +1,8 @@
 from django.db import models
+from apps.methodics.models import Subject, Concept
 
 
+# Вершины графа
 KNOW = 'KN'
 UNDERSTAND = 'UN'
 CASES = 'CS'
@@ -18,6 +20,22 @@ class GraphNode(models.Model):
     description = models.TextField(verbose_name='Комментарий методиста')
     node_type = models.CharField(
         max_length=2, choices=TYPE_CHOICES, verbose_name='тип узла')
+
+    subjects = models.ManyToManyField(
+        Subject,
+        default=None,
+        null=True,
+        verbose_name='Предметы',
+        related_name='graph_nodes'
+    )
+
+    concepts = models.ManyToManyField(
+        Concept,
+        default=None,
+        null=True,
+        verbose_name='Концепты',
+        related_name='graph_nodes'
+    )
 
     class Meta:
         verbose_name = 'вершина графа'
