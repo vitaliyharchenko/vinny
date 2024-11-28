@@ -113,9 +113,7 @@ function GraphComponent() {
 
     return (
         <div>
-            <p>
-                Edit <code>src/App.js</code> and save to reload.
-            </p>
+            <p dangerouslySetInnerHTML={{ __html: graphData }} />
             {/* Добавим фильтры и другие компоненты позже */}
             <Graph
                 id="graph-id"
