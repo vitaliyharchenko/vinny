@@ -29,7 +29,6 @@ class GraphNode(models.Model):
     subjects = models.ManyToManyField(
         Subject,
         default=None,
-        null=True,
         verbose_name='Предметы',
         related_name='graph_nodes'
     )
@@ -37,7 +36,6 @@ class GraphNode(models.Model):
     concepts = models.ManyToManyField(
         Concept,
         default=None,
-        null=True,
         verbose_name='Концепты',
         related_name='graph_nodes'
     )

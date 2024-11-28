@@ -63,7 +63,6 @@ class Concept(models.Model):
     subjects = models.ManyToManyField(
         Subject,
         default=None,
-        null=True,
         verbose_name='Предметы',
         related_name='concepts'
     )
