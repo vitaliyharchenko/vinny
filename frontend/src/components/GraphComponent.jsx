@@ -1,147 +1,102 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
+import {
+    dagStratify,
+    layeringLongestPath,
+    sugiyama,
+    decrossOpt,
+    coordCenter,
+} from "d3-dag";
 
 function GraphComponent() {
     // Указатель на элемент, где живет граф
     const svgRef = useRef();
 
     const data = {
-        nodes: [{ id: "Harry" }, { id: "Sally" }, { id: "Alice" }],
+        nodes: [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }],
         links: [
-            { source: "Harry", target: "Sally" },
-            { source: "Harry", target: "Alice" },
+            { source: "1", target: "2" },
+            { source: "2", target: "3" },
+            { source: "3", target: "4" },
+            { source: "1", target: "4" },
         ],
     };
 
     useEffect(() => {
-        // Очистка SVG перед отрисовкой
+        // Clear SVG
         d3.select(svgRef.current).selectAll("*").remove();
 
-        // Установка размеров SVG
+        // Define dimensions
+        const width = 600;
+        const height = 400;
+
         const svg = d3
             .select(svgRef.current)
-            .attr("width", "100%")
-            .attr("height", 600);
+            .attr("width", width)
+            .attr("height", height);
 
-        const width = svgRef.current.clientWidth;
-        const height = svgRef.current.clientHeight;
+        // Create DAG
+        const stratify = dagStratify();
+        const dag = stratify(data);
 
-        // Определение стрелок для направленности
+        // Configure layout
+        const layout = sugiyama()
+            .size([width, height])
+            .layering(layeringLongestPath())
+            .decross(decrossOpt())
+            .coord(coordCenter());
+
+        layout(dag);
+
+        // Create scales
+        const line = d3
+            .line()
+            .curve(d3.curveCatmullRom)
+            .x((d) => d.x)
+            .y((d) => d.y);
+
+        // Draw edges
+        svg.append("g")
+            .selectAll("path")
+            .data(dag.links())
+            .enter()
+            .append("path")
+            .attr("d", ({ points }) => line(points))
+            .attr("fill", "none")
+            .attr("stroke", "#999")
+            .attr("stroke-width", 2)
+            .attr("marker-end", "url(#arrowhead)");
+
+        // Define arrowhead marker
         svg.append("defs")
             .append("marker")
             .attr("id", "arrowhead")
-            .attr("viewBox", "-0 -5 10 10")
-            .attr("refX", 23) // Смещение стрелки
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
             .attr("refY", 0)
-            .attr("orient", "auto")
             .attr("markerWidth", 6)
             .attr("markerHeight", 6)
-            .attr("xoverflow", "visible")
-            .append("svg:path")
-            .attr("d", "M 0,-5 L 10 ,0 L 0,5")
-            .attr("fill", "#999")
-            .style("stroke", "none");
-
-        // Создание групп для узлов и ребер
-        const svgGroup = svg.append("g").attr("class", "everything");
-
-        // Добавление масштабирования и перемещения
-        const zoom = d3
-            .zoom()
-            .scaleExtent([0.1, 4])
-            .on("zoom", (event) => {
-                svgGroup.attr("transform", event.transform);
-            });
-
-        svg.call(zoom);
-
-        // Создание симуляции
-        const simulation = d3
-            .forceSimulation(data.nodes)
-            .force(
-                "link",
-                d3
-                    .forceLink(data.links)
-                    .id((d) => d.id)
-                    .distance(200)
-            )
-            .force("charge", d3.forceManyBody().strength(-500))
-            .force("center", d3.forceCenter(width / 2, height / 2));
-
-        // Ребра
-        const link = svgGroup
-            .append("g")
-            .attr("class", "links")
-            .selectAll("path")
-            .data(data.links)
-            .enter()
+            .attr("orient", "auto")
             .append("path")
-            .attr("stroke", "#999")
-            .attr("stroke-opacity", 0.6)
-            .attr("stroke-width", 2)
-            .attr("fill", "none")
-            .attr("marker-end", "url(#arrowhead)"); // Добавление стрелки на конец ребра
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("fill", "#999");
 
-        // Узлы
-        const node = svgGroup
+        // Draw nodes
+        const nodes = svg
             .append("g")
-            .attr("class", "nodes")
             .selectAll("g")
-            .data(data.nodes)
+            .data(dag.descendants())
             .enter()
             .append("g")
-            .call(
-                d3
-                    .drag()
-                    .on("start", dragStarted)
-                    .on("drag", dragged)
-                    .on("end", dragEnded)
-            );
+            .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
 
-        node.append("circle").attr("r", 20).attr("fill", "lightblue");
+        nodes.append("circle").attr("r", 15).attr("fill", "lightblue");
 
-        node.append("text")
-            .attr("dx", -10)
-            .attr("dy", 5)
-            .text((d) => d.id);
-
-        // Обновление позиций узлов и ребер при каждой итерации симуляции
-        simulation.on("tick", () => {
-            // Обновление позиций ребер
-            link.attr("d", (d) => {
-                const sourceX = d.source.x;
-                const sourceY = d.source.y;
-                const targetX = d.target.x;
-                const targetY = d.target.y;
-
-                const dx = targetX - sourceX;
-                const dy = targetY - sourceY;
-                const dr = 0; // Кривизна ребра (0 для прямой линии)
-
-                return `M${sourceX},${sourceY}L${targetX},${targetY}`;
-            });
-
-            // Обновление позиций узлов
-            node.attr("transform", (d) => `translate(${d.x},${d.y})`);
-        });
-
-        // Функции для обработки перетаскивания узлов
-        function dragStarted(event, d) {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
-
-        function dragged(event, d) {
-            d.fx = event.x;
-            d.fy = event.y;
-        }
-
-        function dragEnded(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
+        nodes
+            .append("text")
+            .text((d) => d.data.id)
+            .attr("text-anchor", "middle")
+            .attr("dy", 5);
     }, []);
 
     return <svg ref={svgRef}></svg>;
