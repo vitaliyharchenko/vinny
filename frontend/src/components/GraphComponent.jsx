@@ -30,7 +30,6 @@ function GraphComponent() {
                     );
                 }
                 const graphData = await response.json();
-                console.log(graphData);
                 setData(graphData);
             } catch (error) {
                 console.error("Ошибка:", error);
@@ -47,16 +46,13 @@ function GraphComponent() {
         d3.select(svgRef.current).selectAll("*").remove();
 
         // Определение рабочей области
-        const width = 800;
-        const height = 600;
+        const width = 1000;
+        const height = 1000;
         const svg = d3
             .select(svgRef.current)
             .attr("width", width)
             .attr("height", height)
             .style("background-color", "lightblue");
-
-        // Добавление группы для масштабирования и перемещения
-        const container = svg.append("g");
 
         // Создание направленного графа в формате d3dag
         const builder = graphStratify()
@@ -70,7 +66,7 @@ function GraphComponent() {
 
         // Определяем настройки для выкладки
         const nodeRadius = 20;
-        const nodeSize = [nodeRadius * 5, nodeRadius * 3];
+        const nodeSize = [nodeRadius * 15, nodeRadius * 3];
         // this truncates the edges so we can render arrows nicely
         const shape = tweakShape(nodeSize, shapeEllipse);
 
@@ -84,7 +80,7 @@ function GraphComponent() {
             .gap([nodeRadius, nodeRadius])
             .tweaks([shape]);
 
-        const { layout_width, layout_height } = layout(graph);
+        layout(graph);
 
         // Создание групп для добавления ребер и узлов
         const linkGroup = svg.append("g");
@@ -119,17 +115,23 @@ function GraphComponent() {
                 // Здесь вы можете обновить состояние или вызвать функцию для отображения информации об узле
             });
 
-        // Добавление круга к узлу
-        node.append("circle")
-            .attr("r", 20) // Увеличиваем радиус для размещения текста
-            .attr("fill", "steelblue");
+        // Добавление прямоугольника к узлу
+        node.append("rect")
+            .attr("width", 300)
+            .attr("height", 40)
+            .attr("x", -150)
+            .attr("y", -20)
+            .attr("stroke", "black")
+            .attr("fill", "#69a3b2");
 
         // Добавление текста к узлу
         node.append("text")
             .attr("text-anchor", "middle")
             .attr("dy", 5) // Смещение по вертикали для центрирования текста
-            .text((d) => d.data.title)
+            .text((d) => d.data.title.substring(0, 30))
             .attr("fill", "white"); // Цвет текста
+
+        node.append("title").text((d) => d.data.title);
     }, [data]);
 
     return <svg ref={svgRef}></svg>;
