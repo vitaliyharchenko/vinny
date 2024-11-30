@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import { graphStratify, sugiyama, tweakShape, shapeEllipse } from "d3-dag";
 
@@ -6,17 +6,43 @@ function GraphComponent() {
     // Указатель на элемент, где живет граф
     const svgRef = useRef();
 
-    const data = {
-        nodes: [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }],
-        links: [
-            { source: "1", target: "2" },
-            { source: "2", target: "3" },
-            { source: "3", target: "4" },
-            { source: "1", target: "4" },
-        ],
-    };
+    // Состояние для хранения данных графа
+    const [data, setData] = useState(null);
+
+    // const data = {
+    //     nodes: [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }],
+    //     links: [
+    //         { source: "1", target: "2" },
+    //         { source: "2", target: "3" },
+    //         { source: "3", target: "4" },
+    //         { source: "1", target: "4" },
+    //     ],
+    // };
 
     useEffect(() => {
+        // Функция для получения данных с сервера
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:8000/graph/");
+                if (!response.ok) {
+                    throw new Error(
+                        `Ошибка при получении данных: ${response.statusText}`
+                    );
+                }
+                const graphData = await response.json();
+                console.log(graphData);
+                setData(graphData);
+            } catch (error) {
+                console.error("Ошибка:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (!data) return; // Если данные еще не загружены, ничего не делаем
+
         // Очистка SVG
         d3.select(svgRef.current).selectAll("*").remove();
 
@@ -34,9 +60,11 @@ function GraphComponent() {
 
         // Создание направленного графа в формате d3dag
         const builder = graphStratify()
-            .id((d) => d.id)
+            .id((d) => d.pk.toString())
             .parentIds((d) =>
-                data.links.filter((l) => l.target === d.id).map((l) => l.source)
+                data.edges
+                    .filter((l) => l.child === d.pk)
+                    .map((l) => l.parent.toString())
             );
         const graph = builder(data.nodes);
 
@@ -100,9 +128,9 @@ function GraphComponent() {
         node.append("text")
             .attr("text-anchor", "middle")
             .attr("dy", 5) // Смещение по вертикали для центрирования текста
-            .text((d) => d.data.id)
+            .text((d) => d.data.title)
             .attr("fill", "white"); // Цвет текста
-    }, []);
+    }, [data]);
 
     return <svg ref={svgRef}></svg>;
 }

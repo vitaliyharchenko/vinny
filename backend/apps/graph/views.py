@@ -7,7 +7,7 @@ from .serializers import GraphNodeSerializer, NodeRelationSerializer
 
 # Create your views here.
 class GraphView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, format=None):
         nodes = GraphNode.objects.all()
