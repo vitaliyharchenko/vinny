@@ -1,104 +1,107 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
-import {
-    graphStratify,
-    layeringLongestPath,
-    sugiyama,
-    decrossOpt,
-    coordCenter,
-} from "d3-dag";
+import { graphStratify, sugiyama, tweakShape, shapeEllipse } from "d3-dag";
 
 function GraphComponent() {
     // Указатель на элемент, где живет граф
     const svgRef = useRef();
 
+    const data = {
+        nodes: [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }],
+        links: [
+            { source: "1", target: "2" },
+            { source: "2", target: "3" },
+            { source: "3", target: "4" },
+            { source: "1", target: "4" },
+        ],
+    };
+
     useEffect(() => {
         // Очистка SVG
         d3.select(svgRef.current).selectAll("*").remove();
 
-        // Определение размеров
-        const width = 600;
-        const height = 400;
-
+        // Определение рабочей области
+        const width = 800;
+        const height = 600;
         const svg = d3
             .select(svgRef.current)
             .attr("width", width)
-            .attr("height", height);
+            .attr("height", height)
+            .style("background-color", "lightblue");
 
-        // Данные
-        const data = [
-            { id: "1" },
-            { id: "2", parentIds: ["1"] },
-            { id: "3", parentIds: ["2"] },
-            { id: "4", parentIds: ["3", "1"] }, // Узел 4 имеет двух родителей: 1 и 3
-        ];
+        // Добавление группы для масштабирования и перемещения
+        const container = svg.append("g");
 
-        // Создание DAG
-        const dag = graphStratify()(data);
+        // Создание направленного графа в формате d3dag
+        const builder = graphStratify()
+            .id((d) => d.id)
+            .parentIds((d) =>
+                data.links.filter((l) => l.target === d.id).map((l) => l.source)
+            );
+        const graph = builder(data.nodes);
+
+        // Определяем настройки для выкладки
+        const nodeRadius = 20;
+        const nodeSize = [nodeRadius * 5, nodeRadius * 3];
+        // this truncates the edges so we can render arrows nicely
+        const shape = tweakShape(nodeSize, shapeEllipse);
 
         // Настройка раскладки
         const layout = sugiyama()
-            .size([width, height])
-            .layering(layeringLongestPath())
-            .decross(decrossOpt())
-            .coord(coordCenter());
+            //.layering(d3dag.layeringLongestPath())
+            //.decross(d3dag.decrossOpt())
+            //.coord(d3dag.coordGreedy())
+            //.coord(d3dag.coordQuad())
+            .nodeSize(nodeSize)
+            .gap([nodeRadius, nodeRadius])
+            .tweaks([shape]);
 
-        layout(dag);
+        const { layout_width, layout_height } = layout(graph);
 
-        // Создание линии
-        const line = d3
-            .line()
-            .curve(d3.curveCatmullRom)
-            .x((d) => d.x)
-            .y((d) => d.y);
-
-        // Определение маркера стрелки
-        svg.append("defs")
-            .append("marker")
-            .attr("id", "arrowhead")
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 15) // Настройте это значение для позиционирования стрелки
-            .attr("refY", 0)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
-            .attr("orient", "auto")
-            .append("path")
-            .attr("d", "M0,-5L10,0L0,5")
-            .attr("fill", "#999");
+        // Создание групп для добавления ребер и узлов
+        const linkGroup = svg.append("g");
+        const nodeGroup = svg.append("g");
 
         // Отрисовка ребер
-        svg.append("g")
+        linkGroup
             .selectAll("path")
-            .data(dag.links())
-            .enter()
-            .append("path")
-            .attr("d", ({ points }) => line(points))
+            .data(graph.links())
+            .join("path")
+            .attr(
+                "d",
+                (d) =>
+                    `M${d.source.x},${d.source.y}C${d.source.x},${
+                        (d.source.y + d.target.y) / 2
+                    } ${d.target.x},${(d.source.y + d.target.y) / 2} ${
+                        d.target.x
+                    },${d.target.y}`
+            )
             .attr("fill", "none")
-            .attr("stroke", "#999")
-            .attr("stroke-width", 2)
-            .attr("marker-end", "url(#arrowhead)");
+            .attr("stroke", "black");
 
         // Отрисовка узлов
-        const nodes = svg
-            .append("g")
+        const node = nodeGroup
             .selectAll("g")
-            .data(dag.descendants())
-            .enter()
-            .append("g")
-            .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
+            .data(graph.nodes())
+            .join("g")
+            .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+            .on("click", (event, d) => {
+                // Обработка клика по узлу
+                console.log("Клик по узлу:", d.data);
+                // Здесь вы можете обновить состояние или вызвать функцию для отображения информации об узле
+            });
 
-        nodes.append("circle").attr("r", 15).attr("fill", "lightblue");
+        // Добавление круга к узлу
+        node.append("circle")
+            .attr("r", 20) // Увеличиваем радиус для размещения текста
+            .attr("fill", "steelblue");
 
-        nodes
-            .append("text")
-            .text((d) => d.data.id)
+        // Добавление текста к узлу
+        node.append("text")
             .attr("text-anchor", "middle")
-            .attr("dy", 5);
-
-        // Добавление интерактивности
-        nodes.on("click", (event, d) => {
-            console.log("Клик по узлу:", d.data.id);
-        });
+            .attr("dy", 5) // Смещение по вертикали для центрирования текста
+            .text((d) => d.data.id)
+            .attr("fill", "white"); // Цвет текста
     }, []);
 
     return <svg ref={svgRef}></svg>;
