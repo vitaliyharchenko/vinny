@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
 import {
-    dagStratify,
+    graphStratify,
     layeringLongestPath,
     sugiyama,
     decrossOpt,
@@ -12,21 +12,11 @@ function GraphComponent() {
     // Указатель на элемент, где живет граф
     const svgRef = useRef();
 
-    const data = {
-        nodes: [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }],
-        links: [
-            { source: "1", target: "2" },
-            { source: "2", target: "3" },
-            { source: "3", target: "4" },
-            { source: "1", target: "4" },
-        ],
-    };
-
     useEffect(() => {
-        // Clear SVG
+        // Очистка SVG
         d3.select(svgRef.current).selectAll("*").remove();
 
-        // Define dimensions
+        // Определение размеров
         const width = 600;
         const height = 400;
 
@@ -35,11 +25,18 @@ function GraphComponent() {
             .attr("width", width)
             .attr("height", height);
 
-        // Create DAG
-        const stratify = dagStratify();
-        const dag = stratify(data);
+        // Данные
+        const data = [
+            { id: "1" },
+            { id: "2", parentIds: ["1"] },
+            { id: "3", parentIds: ["2"] },
+            { id: "4", parentIds: ["3", "1"] }, // Узел 4 имеет двух родителей: 1 и 3
+        ];
 
-        // Configure layout
+        // Создание DAG
+        const dag = graphStratify()(data);
+
+        // Настройка раскладки
         const layout = sugiyama()
             .size([width, height])
             .layering(layeringLongestPath())
@@ -48,14 +45,28 @@ function GraphComponent() {
 
         layout(dag);
 
-        // Create scales
+        // Создание линии
         const line = d3
             .line()
             .curve(d3.curveCatmullRom)
             .x((d) => d.x)
             .y((d) => d.y);
 
-        // Draw edges
+        // Определение маркера стрелки
+        svg.append("defs")
+            .append("marker")
+            .attr("id", "arrowhead")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15) // Настройте это значение для позиционирования стрелки
+            .attr("refY", 0)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("fill", "#999");
+
+        // Отрисовка ребер
         svg.append("g")
             .selectAll("path")
             .data(dag.links())
@@ -67,21 +78,7 @@ function GraphComponent() {
             .attr("stroke-width", 2)
             .attr("marker-end", "url(#arrowhead)");
 
-        // Define arrowhead marker
-        svg.append("defs")
-            .append("marker")
-            .attr("id", "arrowhead")
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 15)
-            .attr("refY", 0)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
-            .attr("orient", "auto")
-            .append("path")
-            .attr("d", "M0,-5L10,0L0,5")
-            .attr("fill", "#999");
-
-        // Draw nodes
+        // Отрисовка узлов
         const nodes = svg
             .append("g")
             .selectAll("g")
@@ -97,6 +94,11 @@ function GraphComponent() {
             .text((d) => d.data.id)
             .attr("text-anchor", "middle")
             .attr("dy", 5);
+
+        // Добавление интерактивности
+        nodes.on("click", (event, d) => {
+            console.log("Клик по узлу:", d.data.id);
+        });
     }, []);
 
     return <svg ref={svgRef}></svg>;
