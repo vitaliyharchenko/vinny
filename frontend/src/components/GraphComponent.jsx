@@ -52,7 +52,21 @@ function GraphComponent() {
             .select(svgRef.current)
             .attr("width", width)
             .attr("height", height)
-            .style("background-color", "lightblue");
+            .style("background-color", "lightblue")
+            .style("cursor", "grab");
+
+        // Добавление группы для масштабирования и перетаскивания
+        const container = svg.append("g");
+
+        // Масштабирование и перетаскивание
+        const zoom = d3
+            .zoom()
+            .scaleExtent([0.1, 4]) // Ограничение масштаба
+            .on("zoom", (event) => {
+                container.attr("transform", event.transform);
+            });
+
+        svg.call(zoom);
 
         // Создание направленного графа в формате d3dag
         const builder = graphStratify()
@@ -87,6 +101,20 @@ function GraphComponent() {
         const nodeGroup = svg.append("g");
 
         // Отрисовка ребер
+        // Определение маркера стрелки
+        svg.append("defs")
+            .append("marker")
+            .attr("id", "arrowhead")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", 0)
+            .attr("markerWidth", 10)
+            .attr("markerHeight", 10)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("fill", "black");
+
         linkGroup
             .selectAll("path")
             .data(graph.links())
@@ -98,9 +126,10 @@ function GraphComponent() {
                         (d.source.y + d.target.y) / 2
                     } ${d.target.x},${(d.source.y + d.target.y) / 2} ${
                         d.target.x
-                    },${d.target.y}`
+                    },${d.target.y - 15}`
             )
             .attr("fill", "none")
+            .attr("marker-end", "url(#arrowhead)")
             .attr("stroke", "black");
 
         // Отрисовка узлов
