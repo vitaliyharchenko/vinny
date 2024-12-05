@@ -11,21 +11,29 @@ class GraphView(APIView):
 
     def get(self, request, format=None):
         # Получаем параметры фильтра из запроса
-        subject_param = request.query_params.get('subject')
-        concept_param = request.query_params.get('concept')
+        subject_query = request.query_params.get('subject')
+        concept_query = request.query_params.get('concept')
+        subject_id = request.query_params.get('subject_id')
+        concept_id = request.query_params.get('concept_id')
 
         # Начинаем с базового queryset
         nodes = GraphNode.objects.all()
 
         # Фильтр по subject (если указан)
-        if subject_param:
+        if subject_query:
             # Предполагается, что subject имеет поле title и у узлов ManyToMany к subjects
-            nodes = nodes.filter(subjects__title__icontains=subject_param)
+            nodes = nodes.filter(subjects__title__icontains=subject_query)
+
+        if subject_id:
+            nodes = nodes.filter(subjects__pk=subject_id)
 
         # Фильтр по concept (если указан)
-        if concept_param:
+        if concept_query:
             # Аналогично для concepts
-            nodes = nodes.filter(concepts__title__icontains=concept_param)
+            nodes = nodes.filter(concepts__title__icontains=concept_query)
+
+        if concept_id:
+            nodes = nodes.filter(concepts__pk=concept_id)
 
         # После фильтрации узлов, нам нужно отфильтровать ребра, чтобы показывать только те,
         # которые соединяют узлы из отфильтрованного набора
