@@ -1,0 +1,73 @@
+[
+    {
+        "model": "methodics.classfromtag",
+        "pk": 1,
+        "fields": { "title": "1 класс", "class_number": 1, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 2,
+        "fields": { "title": "2 класс", "class_number": 2, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 3,
+        "fields": { "title": "3 класс", "class_number": 3, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 4,
+        "fields": { "title": "4 класс", "class_number": 4, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 5,
+        "fields": { "title": "5 класс", "class_number": 5, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 6,
+        "fields": { "title": "6 класс", "class_number": 6, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 7,
+        "fields": { "title": "7 класс", "class_number": 7, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 8,
+        "fields": { "title": "8 класс", "class_number": 8, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 9,
+        "fields": { "title": "9 класс", "class_number": 9, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 10,
+        "fields": { "title": "10 класс", "class_number": 10, "description": "" }
+    },
+    {
+        "model": "methodics.classfromtag",
+        "pk": 11,
+        "fields": { "title": "11 класс", "class_number": 11, "description": "" }
+    },
+    {
+        "model": "methodics.subject",
+        "pk": 5,
+        "fields": { "title": "Математика" }
+    },
+    {
+        "model": "methodics.subject",
+        "pk": 17,
+        "fields": { "title": "Русский язык" }
+    },
+    { "model": "methodics.subject", "pk": 32, "fields": { "title": "Физика" } },
+    {
+        "model": "methodics.subject",
+        "pk": 298,
+        "fields": { "title": "Английский язык" }
+    }
+]

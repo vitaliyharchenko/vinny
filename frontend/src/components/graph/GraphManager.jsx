@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from "react";
 import GraphView from "./GraphView";
 import NodeEdgeEditor from "./NodeEdgeEditor";
+import FilterPanel from "./FilterPanel";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
 
 function GraphManager() {
     const [data, setData] = useState(null);
     const [selectedElement, setSelectedElement] = useState(null);
 
+    const [subjectFilter, setSubjectFilter] = useState("");
+    const [conceptFilter, setConceptFilter] = useState("");
+
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [subjectFilter, conceptFilter]);
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8000/api/graph/");
+            let url = "http://localhost:8000/api/graph/";
+            const params = [];
+            if (subjectFilter)
+                params.push(`subject_id=${encodeURIComponent(subjectFilter)}`);
+            if (conceptFilter)
+                params.push(`concept_id=${encodeURIComponent(conceptFilter)}`);
+            if (params.length > 0) {
+                url += "?" + params.join("&");
+            }
+
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(
                     `Ошибка загрузки данных: ${response.statusText}`
@@ -140,6 +154,11 @@ function GraphManager() {
         setSelectedElement(null);
     };
 
+    const handleFilterChange = ({ subject, concept }) => {
+        setSubjectFilter(subject || "");
+        setConceptFilter(concept || "");
+    };
+
     return (
         <>
             <Navbar bg="light" expand="lg">
@@ -162,6 +181,7 @@ function GraphManager() {
                 fluid
                 style={{ position: "relative", marginTop: "10px" }}
             >
+                <FilterPanel onFilterChange={handleFilterChange} />
                 {data && (
                     <GraphView
                         data={data}

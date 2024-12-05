@@ -1,0 +1,1366 @@
+[
+    {
+        "model": "methodics.concept",
+        "pk": 18,
+        "fields": {
+            "title": "Квадратные уравнения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 19,
+        "fields": {
+            "title": "Главные члены предложения",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 20,
+        "fields": {
+            "title": "Второстепенные члены предложения",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 21,
+        "fields": {
+            "title": "Односоставное предложение",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 22,
+        "fields": {
+            "title": "Дроби",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 23,
+        "fields": {
+            "title": "Рациональные выражения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 24,
+        "fields": {
+            "title": "Квадратный корень",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 25,
+        "fields": {
+            "title": "Линейная функция",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 26,
+        "fields": {
+            "title": "Квадратичная функция",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 27,
+        "fields": {
+            "title": "Словосочетание",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 28,
+        "fields": {
+            "title": "Правила постановки тире",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 30,
+        "fields": {
+            "title": "Обособление однородных членов предложения",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 31,
+        "fields": {
+            "title": "Обособление вводных слов, вставных конструкций и обращений",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 33,
+        "fields": {
+            "title": "Фотоны, введение в квантовую физику",
+            "is_active": true,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 34,
+        "fields": {
+            "title": "Обособление согласованных и несогласованных определений и приложений",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 35,
+        "fields": {
+            "title": "Классификация предложения по цели высказывания и эмоциональной окраске",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 36,
+        "fields": {
+            "title": "Сложносочиненное предложение",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 37,
+        "fields": {
+            "title": "Сложноподчиненное предложение",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 38,
+        "fields": {
+            "title": "Бессоюзное предложение",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 39,
+        "fields": {
+            "title": "Предложения с чужой речью",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 40,
+        "fields": {
+            "title": "Гипербола",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 43,
+        "fields": {
+            "title": "Причастие",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 44,
+        "fields": {
+            "title": "Деепричастие",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 62,
+        "fields": {
+            "title": "Линейные неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 63,
+        "fields": {
+            "title": "Квадратные неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 64,
+        "fields": {
+            "title": "Фотоэффект",
+            "is_active": true,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 65,
+        "fields": {
+            "title": "Формулы сокращенного умножения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 66,
+        "fields": {
+            "title": "Разложение многочленов на множители",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 67,
+        "fields": {
+            "title": "Одночлены и многочлены",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 68,
+        "fields": {
+            "title": "Имя числительное",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 69,
+        "fields": {
+            "title": "Союзы",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 70,
+        "fields": {
+            "title": "Арифметическая прогрессия",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 71,
+        "fields": {
+            "title": "Геометрическая прогрессия",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 72,
+        "fields": {
+            "title": "Наречие и СКС",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 73,
+        "fields": {
+            "title": "Рациональные неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 74,
+        "fields": {
+            "title": "Местоимение",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 75,
+        "fields": {
+            "title": "Системы уравнений и неравенств",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 299,
+        "fields": {
+            "title": "Present Simple",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 300,
+        "fields": {
+            "title": "Морфологические признаки имени существительного",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 308,
+        "fields": {
+            "title": "Past Simple",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 309,
+        "fields": {
+            "title": "Present Continuous",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 310,
+        "fields": {
+            "title": "Past Continuous",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 311,
+        "fields": {
+            "title": "Present Perfect Simple",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 312,
+        "fields": {
+            "title": "Past Perfect Simple",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 345,
+        "fields": {
+            "title": "Present Perfect Continuous",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 346,
+        "fields": {
+            "title": "Past Perfect Continuous",
+            "is_active": true,
+            "subjects": [
+                298
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 354,
+        "fields": {
+            "title": "Тригонометрические уравнения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 355,
+        "fields": {
+            "title": "Лексикология",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 356,
+        "fields": {
+            "title": "Преобразования и вычисления тригонометрических выражений",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 357,
+        "fields": {
+            "title": "Тестовый концепт",
+            "is_active": false,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 358,
+        "fields": {
+            "title": "Функция y=sinx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 359,
+        "fields": {
+            "title": "Функция y=arcsinx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 360,
+        "fields": {
+            "title": "Функция y=cosx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 361,
+        "fields": {
+            "title": "Функция y=arccosx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 362,
+        "fields": {
+            "title": "Функция y=arctgx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 363,
+        "fields": {
+            "title": "Функция y=tgx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 364,
+        "fields": {
+            "title": "Функция y=ctgx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 365,
+        "fields": {
+            "title": "Функция y=arcctgx",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 366,
+        "fields": {
+            "title": "Морфемика",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 367,
+        "fields": {
+            "title": "Звуки и буквы",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 368,
+        "fields": {
+            "title": "Правописание Ъ и Ь",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 369,
+        "fields": {
+            "title": "Морфологические признаки имени прилагательного",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 370,
+        "fields": {
+            "title": "Морфологические признаки глагола",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 371,
+        "fields": {
+            "title": "Тригонометрические функции в геометрии",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 372,
+        "fields": {
+            "title": "Правописание глаголов",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 373,
+        "fields": {
+            "title": "Степень с натуральным показателем и её свойства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 374,
+        "fields": {
+            "title": "Степень с целым показателем и её свойства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 375,
+        "fields": {
+            "title": "Степень с рациональным показателем и её свойства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 376,
+        "fields": {
+            "title": "Правописание имён существительных",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 377,
+        "fields": {
+            "title": "Правописание имени прилагательного",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 378,
+        "fields": {
+            "title": "Синтаксический разбор предложения",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 379,
+        "fields": {
+            "title": "Правописание приставок",
+            "is_active": true,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 380,
+        "fields": {
+            "title": "Словообразование",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 382,
+        "fields": {
+            "title": "Текст",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 383,
+        "fields": {
+            "title": "Лексические средства художественной выразительности",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 384,
+        "fields": {
+            "title": "Синтаксические средства художественной выразительности",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 385,
+        "fields": {
+            "title": "Теория вероятностей",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 386,
+        "fields": {
+            "title": "Теория множеств",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 387,
+        "fields": {
+            "title": "Описательная статистика",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 388,
+        "fields": {
+            "title": "Правописание гласных после шипящих и ц",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 389,
+        "fields": {
+            "title": "Показательная функция",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 390,
+        "fields": {
+            "title": "Показательные уравнения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 391,
+        "fields": {
+            "title": "Показательные уравнения (удалить)",
+            "is_active": false,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 392,
+        "fields": {
+            "title": "Показательные неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 393,
+        "fields": {
+            "title": "Правописание гласных",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 394,
+        "fields": {
+            "title": "Логарифмическая функция",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 395,
+        "fields": {
+            "title": "Логарифмические уравнения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 396,
+        "fields": {
+            "title": "Логарифмические неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 397,
+        "fields": {
+            "title": "Преобразования и вычисления логарифмических выражений",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 398,
+        "fields": {
+            "title": "Правописание согласных",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 399,
+        "fields": {
+            "title": "Правила постановки знаков препинания",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 400,
+        "fields": {
+            "title": "Связность текста",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 401,
+        "fields": {
+            "title": "Степенные функции",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 402,
+        "fields": {
+            "title": "Десятичные дроби",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 403,
+        "fields": {
+            "title": "Правописание словарных слов",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 405,
+        "fields": {
+            "title": "Операции с целыми числами",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 407,
+        "fields": {
+            "title": "Делимость чисел",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 408,
+        "fields": {
+            "title": "Атомная физика",
+            "is_active": false,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 409,
+        "fields": {
+            "title": "Основы физики",
+            "is_active": false,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 410,
+        "fields": {
+            "title": "Основы кинематики",
+            "is_active": false,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 411,
+        "fields": {
+            "title": "Равномерное прямолинейное движение",
+            "is_active": false,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 412,
+        "fields": {
+            "title": "Равноускоренное прямолинейное движение",
+            "is_active": false,
+            "subjects": [
+                32
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 413,
+        "fields": {
+            "title": "Основы комбинаторики",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 414,
+        "fields": {
+            "title": "Комбинаторика",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 415,
+        "fields": {
+            "title": "Функция как отображение",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 416,
+        "fields": {
+            "title": "Числовые функции и их свойства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 417,
+        "fields": {
+            "title": "Производная",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 418,
+        "fields": {
+            "title": "Уравнения с модулем",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 419,
+        "fields": {
+            "title": "Предел",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 420,
+        "fields": {
+            "title": "Иррациональные уравнения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 421,
+        "fields": {
+            "title": "Неравенства с модулем",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 422,
+        "fields": {
+            "title": "Натуральные числа",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 423,
+        "fields": {
+            "title": "Решение уравнений",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 424,
+        "fields": {
+            "title": "Пропорциональные величины",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 425,
+        "fields": {
+            "title": "Рациональные уравнения",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 426,
+        "fields": {
+            "title": "Иррациональные неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 427,
+        "fields": {
+            "title": "Тригонометрические неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 428,
+        "fields": {
+            "title": "Неравенства",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 429,
+        "fields": {
+            "title": "Числовые последовательности",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 430,
+        "fields": {
+            "title": "Первообразная и интеграл",
+            "is_active": true,
+            "subjects": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 431,
+        "fields": {
+            "title": "Предлог",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 432,
+        "fields": {
+            "title": "Частицы и междометия",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 433,
+        "fields": {
+            "title": "Частицы",
+            "is_active": false,
+            "subjects": [
+                17
+            ]
+        }
+    },
+    {
+        "model": "methodics.concept",
+        "pk": 434,
+        "fields": {
+            "title": "Параметр",
+            "is_active": false,
+            "subjects": [
+                5
+            ]
+        }
+    }
+]
