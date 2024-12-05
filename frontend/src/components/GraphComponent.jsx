@@ -1,32 +1,22 @@
-import React, { useRef, useEffect, useState } from "react";
-import * as d3 from "d3";
-import { graphStratify, sugiyama, tweakShape, shapeEllipse } from "d3-dag";
+import React, { useEffect, useRef, useState } from "react";
+import cytoscape from "cytoscape";
+import cytoscapeDagre from "cytoscape-dagre";
+cytoscape.use(cytoscapeDagre);
 
 function GraphComponent() {
-    // Указатель на элемент, где живет граф
-    const svgRef = useRef();
+    const cyRef = useRef(null);
+    const containerRef = useRef(null);
 
-    // Состояние для хранения данных графа
     const [data, setData] = useState(null);
 
-    // const data = {
-    //     nodes: [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }],
-    //     links: [
-    //         { source: "1", target: "2" },
-    //         { source: "2", target: "3" },
-    //         { source: "3", target: "4" },
-    //         { source: "1", target: "4" },
-    //     ],
-    // };
-
+    // Загрузка данных с сервера
     useEffect(() => {
-        // Функция для получения данных с сервера
         const fetchData = async () => {
             try {
                 const response = await fetch("http://localhost:8000/graph/");
                 if (!response.ok) {
                     throw new Error(
-                        `Ошибка при получении данных: ${response.statusText}`
+                        `Ошибка загрузки данных: ${response.statusText}`
                     );
                 }
                 const graphData = await response.json();
@@ -35,135 +25,138 @@ function GraphComponent() {
                 console.error("Ошибка:", error);
             }
         };
-
         fetchData();
     }, []);
 
+    // Инициализация Cytoscape после того, как данные загружены
     useEffect(() => {
-        if (!data) return; // Если данные еще не загружены, ничего не делаем
+        if (!data) return; // Ждем, пока данные не загрузятся
 
-        // Очистка SVG
-        d3.select(svgRef.current).selectAll("*").remove();
+        if (cyRef.current) {
+            // Если экземпляр уже существует, уничтожаем и пересоздаем
+            cyRef.current.destroy();
+        }
 
-        // Определение рабочей области
-        const width = 1000;
-        const height = 1000;
-        const svg = d3
-            .select(svgRef.current)
-            .attr("width", width)
-            .attr("height", height)
-            .style("background-color", "lightblue")
-            .style("cursor", "grab");
+        // Преобразование данных в формат Cytoscape
+        // Предполагается, что data.nodes - массив объектов с 'pk' и 'title'
+        // data.edges - массив объектов с 'parent', 'child'
+        const elements = [
+            ...data.nodes.map((node) => ({
+                data: {
+                    id: node.pk.toString(),
+                    label: node.title,
+                    fullData: node,
+                },
+            })),
+            ...data.edges.map((edge) => ({
+                data: {
+                    source: edge.parent.toString(),
+                    target: edge.child.toString(),
+                    fullData: edge,
+                },
+            })),
+        ];
 
-        // Добавление группы для масштабирования и перетаскивания
-        const container = svg.append("g");
+        // Инициализация Cytoscape
+        const cy = cytoscape({
+            container: containerRef.current,
+            elements,
+            style: [
+                {
+                    selector: "node",
+                    style: {
+                        shape: "round-rectangle",
+                        width: "label",
+                        height: "label",
+                        padding: "10px",
+                        "background-color": "#0074D9",
+                        color: "#fff",
+                        "text-wrap": "wrap",
+                        "text-max-width": "180px",
+                        "text-valign": "center",
+                        "text-halign": "center",
+                        content: "data(label)",
+                        "font-size": "12px",
+                    },
+                },
+                {
+                    selector: "edge",
+                    style: {
+                        "line-color": "#000",
+                        width: 2,
+                        "target-arrow-color": "#000",
+                        "target-arrow-shape": "triangle",
+                        "curve-style": "bezier",
+                    },
+                },
+            ],
+            layout: {
+                name: "dagre", // Если хотите иерархический макет, можно использовать dagre
+                rankDir: "LR", // Направление (LR, TB, RL, BT)
+                align: "UR",
+            },
+            wheelSensitivity: 0.2, // чувствительность масштабирования колесиком
+            minZoom: 0.1,
+            maxZoom: 4,
+        });
 
-        // Масштабирование и перетаскивание
-        const zoom = d3
-            .zoom()
-            .scaleExtent([0.1, 4]) // Ограничение масштаба
-            .on("zoom", (event) => {
-                container.attr("transform", event.transform);
-            });
+        cyRef.current = cy;
 
-        svg.call(zoom);
+        // Включить панорамирование/масштабирование из коробки уже работает
+        // по умолчанию, достаточно крутить колесико и перетаскивать фон
 
-        // Создание направленного графа в формате d3dag
-        const builder = graphStratify()
-            .id((d) => d.pk.toString())
-            .parentIds((d) =>
-                data.edges
-                    .filter((l) => l.child === d.pk)
-                    .map((l) => l.parent.toString())
-            );
-        const graph = builder(data.nodes);
+        // Обработка клика по узлу
+        cy.on("tap", "node", (event) => {
+            const nodeData = event.target.data();
+            console.log("Клик по узлу:", nodeData);
+        });
 
-        // Определяем настройки для выкладки
-        const nodeRadius = 20;
-        const nodeSize = [nodeRadius * 15, nodeRadius * 3];
-        // this truncates the edges so we can render arrows nicely
-        const shape = tweakShape(nodeSize, shapeEllipse);
+        // Обработка клика по ребру
+        cy.on("tap", "edge", (event) => {
+            const edgeData = event.target.data();
+            console.log("Клик по ребру:", edgeData);
+        });
 
-        // Настройка раскладки
-        const layout = sugiyama()
-            //.layering(d3dag.layeringLongestPath())
-            //.decross(d3dag.decrossOpt())
-            //.coord(d3dag.coordGreedy())
-            //.coord(d3dag.coordQuad())
-            .nodeSize(nodeSize)
-            .gap([nodeRadius, nodeRadius])
-            .tweaks([shape]);
+        // Возможность добавления узлов по клику на пустую область
+        // Например, при двойном клике на фон можно добавить новый узел
+        cy.on("tap", (event) => {
+            if (event.target === cy) {
+                // Клик по пустому месту
+                console.log(
+                    "Клик по пустой области: можно создать новый узел."
+                );
+                // Пример добавления нового узла:
+                // const pos = event.position;
+                // cy.add({
+                //   group: 'nodes',
+                //   data: { id: 'newNode', label: 'Новый узел' },
+                //   position: { x: pos.x, y: pos.y }
+                // });
+            }
+        });
 
-        layout(graph);
-
-        // Создание групп для добавления ребер и узлов
-        const linkGroup = svg.append("g");
-        const nodeGroup = svg.append("g");
-
-        // Отрисовка ребер
-        // Определение маркера стрелки
-        svg.append("defs")
-            .append("marker")
-            .attr("id", "arrowhead")
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 15)
-            .attr("refY", 0)
-            .attr("markerWidth", 10)
-            .attr("markerHeight", 10)
-            .attr("orient", "auto")
-            .append("path")
-            .attr("d", "M0,-5L10,0L0,5")
-            .attr("fill", "black");
-
-        linkGroup
-            .selectAll("path")
-            .data(graph.links())
-            .join("path")
-            .attr(
-                "d",
-                (d) =>
-                    `M${d.source.x},${d.source.y}C${d.source.x},${
-                        (d.source.y + d.target.y) / 2
-                    } ${d.target.x},${(d.source.y + d.target.y) / 2} ${
-                        d.target.x
-                    },${d.target.y - 15}`
-            )
-            .attr("fill", "none")
-            .attr("marker-end", "url(#arrowhead)")
-            .attr("stroke", "black");
-
-        // Отрисовка узлов
-        const node = nodeGroup
-            .selectAll("g")
-            .data(graph.nodes())
-            .join("g")
-            .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
-            .on("click", (event, d) => {
-                // Обработка клика по узлу
-                console.log("Клик по узлу:", d.data);
-                // Здесь вы можете обновить состояние или вызвать функцию для отображения информации об узле
-            });
-
-        // Добавление прямоугольника к узлу
-        node.append("rect")
-            .attr("width", 300)
-            .attr("height", 40)
-            .attr("x", -150)
-            .attr("y", -20)
-            .attr("stroke", "black")
-            .attr("fill", "#69a3b2");
-
-        // Добавление текста к узлу
-        node.append("text")
-            .attr("text-anchor", "middle")
-            .attr("dy", 5) // Смещение по вертикали для центрирования текста
-            .text((d) => d.data.title.substring(0, 30))
-            .attr("fill", "white"); // Цвет текста
-
-        node.append("title").text((d) => d.data.title);
+        // Пример редактирования узла:
+        // node.data('label', 'Новое имя');
+        // cy.layout({ name: 'dagre' }).run(); // Перерасчет макета при необходимости
     }, [data]);
 
-    return <svg ref={svgRef}></svg>;
+    return (
+        <div
+            style={{
+                width: "800px",
+                height: "600px",
+                border: "1px solid #ccc",
+            }}
+        >
+            <div style={{ marginBottom: "10px" }}>
+                {/* Здесь можно разместить UI для фильтров, редактирования, кнопки создания узлов */}
+            </div>
+            <div
+                ref={containerRef}
+                style={{ width: "100%", height: "100%" }}
+            ></div>
+        </div>
+    );
 }
 
 export default GraphComponent;

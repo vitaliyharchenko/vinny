@@ -1,14 +1,12 @@
 // src/App.jsx
 import React from "react";
-import GraphComponent from "./components/GraphComponent";
+import GraphManager from "./components/graph/GraphManager";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
     return (
         <div className="App">
-            <p>
-                Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <GraphComponent />
+            <GraphManager />
         </div>
     );
 }
