@@ -13,7 +13,7 @@ function GraphManager() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8000/graph/");
+            const response = await fetch("http://localhost:8000/api/graph/");
             if (!response.ok) {
                 throw new Error(
                     `Ошибка загрузки данных: ${response.statusText}`
@@ -27,7 +27,7 @@ function GraphManager() {
     };
 
     const createNode = async (nodeData) => {
-        const response = await fetch("http://localhost:8000/graph/nodes/", {
+        const response = await fetch("http://localhost:8000/api/nodes/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(nodeData),
@@ -40,14 +40,11 @@ function GraphManager() {
     };
 
     const updateNode = async (pk, updatedData) => {
-        const response = await fetch(
-            `http://localhost:8000/graph/nodes/${pk}/`,
-            {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedData),
-            }
-        );
+        const response = await fetch(`http://localhost:8000/api/nodes/${pk}/`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData),
+        });
         const updatedNode = await response.json();
         setData((prev) => ({
             ...prev,
@@ -56,7 +53,7 @@ function GraphManager() {
     };
 
     const deleteNode = async (pk) => {
-        await fetch(`http://localhost:8000/graph/nodes/${pk}/`, {
+        await fetch(`http://localhost:8000/api/nodes/${pk}/`, {
             method: "DELETE",
         });
         setData((prev) => ({
@@ -67,7 +64,7 @@ function GraphManager() {
     };
 
     const createEdge = async (edgeData) => {
-        const response = await fetch("http://localhost:8000/graph/edges/", {
+        const response = await fetch("http://localhost:8000/api/edges/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(edgeData),
@@ -80,14 +77,11 @@ function GraphManager() {
     };
 
     const updateEdge = async (pk, updatedData) => {
-        const response = await fetch(
-            `http://localhost:8000/graph/edges/${pk}/`,
-            {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedData),
-            }
-        );
+        const response = await fetch(`http://localhost:8000/api/edges/${pk}/`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData),
+        });
         const updatedEdge = await response.json();
         setData((prev) => ({
             ...prev,
@@ -96,7 +90,7 @@ function GraphManager() {
     };
 
     const deleteEdge = async (pk) => {
-        await fetch(`http://localhost:8000/graph/edges/${pk}/`, {
+        await fetch(`http://localhost:8000/api/edges/${pk}/`, {
             method: "DELETE",
         });
         setData((prev) => ({

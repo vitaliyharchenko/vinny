@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import GraphNode, TYPE_CHOICES, NodeRelation
-from apps.methodics.models import Subject, Concept
+from apps.methodics.serializers import SubjectSerializer, ConceptSerializer
 
 
 class TypeField(serializers.BaseSerializer):
@@ -10,20 +10,6 @@ class TypeField(serializers.BaseSerializer):
             if t[0] == instance:
                 return t[1]
         return instance
-
-
-class SubjectSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Subject
-        fields = ['pk', 'title']
-
-
-class ConceptSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Concept
-        fields = ['pk', 'title', 'is_active']
 
 
 class GraphNodeSerializer(serializers.ModelSerializer):

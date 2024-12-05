@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
 
     # MyApps
+    'apps.api',
     'apps.graph',
     'apps.users',
     'apps.test',
