@@ -6,15 +6,34 @@ from .models import GraphNode, NodeRelation, TYPE_CHOICES
 from .serializers import GraphNodeSerializer, NodeRelationSerializer
 
 
-# Create your views here.
 class GraphView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, format=None):
-        nodes = GraphNode.objects.all()
-        nodes_serializer = GraphNodeSerializer(nodes, many=True)
+        # Получаем параметры фильтра из запроса
+        subject_param = request.query_params.get('subject')
+        concept_param = request.query_params.get('concept')
 
-        edges = NodeRelation.objects.all()
+        # Начинаем с базового queryset
+        nodes = GraphNode.objects.all()
+
+        # Фильтр по subject (если указан)
+        if subject_param:
+            # Предполагается, что subject имеет поле title и у узлов ManyToMany к subjects
+            nodes = nodes.filter(subjects__title__icontains=subject_param)
+
+        # Фильтр по concept (если указан)
+        if concept_param:
+            # Аналогично для concepts
+            nodes = nodes.filter(concepts__title__icontains=concept_param)
+
+        # После фильтрации узлов, нам нужно отфильтровать ребра, чтобы показывать только те,
+        # которые соединяют узлы из отфильтрованного набора
+        node_pks = nodes.values_list('pk', flat=True)
+        edges = NodeRelation.objects.filter(
+            parent__in=node_pks, child__in=node_pks)
+
+        nodes_serializer = GraphNodeSerializer(nodes, many=True)
         edges_serializer = NodeRelationSerializer(edges, many=True)
 
         return Response({'nodes': nodes_serializer.data, 'edges': edges_serializer.data})
