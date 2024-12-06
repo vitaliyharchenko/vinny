@@ -73,7 +73,7 @@ function GraphView({
             ],
             layout: {
                 name: "dagre",
-                rankDir: "LR",
+                rankDir: "UD",
             },
             wheelSensitivity: 0.2,
             minZoom: 0.1,

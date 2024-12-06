@@ -25,16 +25,15 @@ function GraphManager() {
                 params.push(`concept_id=${encodeURIComponent(conceptFilter)}`);
             if (params.length > 0) {
                 url += "?" + params.join("&");
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(
+                        `Ошибка загрузки данных: ${response.statusText}`
+                    );
+                }
+                const graphData = await response.json();
+                setData(graphData);
             }
-
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(
-                    `Ошибка загрузки данных: ${response.statusText}`
-                );
-            }
-            const graphData = await response.json();
-            setData(graphData);
         } catch (error) {
             console.error("Ошибка:", error);
         }
