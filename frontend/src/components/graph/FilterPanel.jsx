@@ -48,17 +48,32 @@ function FilterPanel({ onFilterChange }) {
     }, [subjectSearch, subjects]);
 
     useEffect(() => {
-        // Фильтрация concepts по conceptSearch
-        if (conceptSearch.trim() === "") {
-            setFilteredConcepts(concepts);
-        } else {
+        // Фильтрация concepts по выбранному subject и тексту conceptSearch
+        let filtered = concepts;
+
+        if (selectedSubject) {
+            filtered = filtered.filter((con) => {
+                return con.subjects.some(
+                    (subject) => subject === Number(selectedSubject)
+                );
+            });
+        }
+
+        if (conceptSearch.trim() !== "") {
             const query = conceptSearch.toLowerCase();
-            const filtered = concepts.filter((con) =>
+            filtered = filtered.filter((con) =>
                 con.title.toLowerCase().includes(query)
             );
-            setFilteredConcepts(filtered);
         }
-    }, [conceptSearch, concepts]);
+
+        setFilteredConcepts(filtered);
+
+        // Если концепты пусты, сбрасываем выбранный концепт и текстовое поле
+        if (filtered.length === 0) {
+            setSelectedConcept("");
+            onFilterChange({ subject: selectedSubject, concept: null });
+        }
+    }, [concepts, selectedSubject, conceptSearch, onFilterChange]);
 
     const handleSubjectChange = (e) => {
         const value = e.target.value;
