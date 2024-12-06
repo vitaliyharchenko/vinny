@@ -145,13 +145,7 @@ function GraphView({
                 // Можно добавить контекстное меню для пустой области
             }
         });
-    }, [
-        data,
-        onSelectElement,
-        onCreateNodeAtPosition,
-        onCreateEdge,
-        edgeCreationMode,
-    ]);
+    }, [data]);
 
     return (
         <Card>
