@@ -4,10 +4,12 @@ from django.views import View
 from django.http import JsonResponse
 
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from openai import OpenAI
 
-from .serializers import SubjectSerializer, ConceptSerializer
-from .models import Subject, Concept
+from .serializers import SubjectSerializer, ConceptSerializer, ConceptRelationSerializer
+from .models import Subject, Concept, ConceptRelation
 
 
 # API views
@@ -19,6 +21,26 @@ class SubjectViewSet(viewsets.ReadOnlyModelViewSet):
 class ConceptViewSet(viewsets.ModelViewSet):
     queryset = Concept.objects.all()
     serializer_class = ConceptSerializer
+
+
+class ConceptRelationViewSet(viewsets.ModelViewSet):
+    queryset = ConceptRelation.objects.all()
+    serializer_class = ConceptRelationSerializer
+
+
+class ConceptGraphAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        concepts = Concept.objects.all()
+        relations = ConceptRelation.objects.all()
+
+        concept_data = ConceptSerializer(concepts, many=True).data
+        relation_data = ConceptRelationSerializer(relations, many=True).data
+
+        # Возвращаем оба массива в одном JSON
+        return Response({
+            "nodes": concept_data,
+            "edges": relation_data
+        })
 
 
 # Real views

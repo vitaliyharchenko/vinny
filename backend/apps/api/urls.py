@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from apps.graph.views import GraphView, NodeViewSet, EdgeViewSet, NodeTypeChoicesView
-from apps.methodics.views import SubjectViewSet, ConceptViewSet
+from apps.methodics.views import SubjectViewSet, ConceptViewSet, ConceptGraphAPIView
 from apps.users.views import UserViewSet
 
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('node_type_choices/', NodeTypeChoicesView.as_view(),
          name='node_type_choices'),
     path('graph/', GraphView.as_view()),
+    path('graph/concepts/', ConceptGraphAPIView.as_view()),
 ]
 
 # •	GET /graph/ – весь граф
@@ -24,6 +25,8 @@ urlpatterns = [
 # •	GET /graph/?subject=Математика&concept=Квадратные%20уравнения отфильтрует узлы, сначала по предмету, затем из этих узлов — по концепту “Квадратные уравнения”.
 # •	GET /graph/?subject_id=1 отфильтрует узлы, связанные с предметом с pk=1.
 # •	GET /graph/?concept_id=20 отфильтрует узлы по концепту с pk=20.
+
+# •	GET /graph/concepts – граф концептов
 
 # •	GET /nodes/ – список всех узлов
 # •	POST /nodes/ – создать узел
