@@ -1,162 +1,131 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import cytoscape from "cytoscape";
-import cytoscapeDagre from "cytoscape-dagre";
-cytoscape.use(cytoscapeDagre);
 
-function GraphComponent() {
-    const cyRef = useRef(null);
-    const containerRef = useRef(null);
+const concepts = [
+    { pk: 0, title: "Счёт до 10" },
+    { pk: 1, title: "Понимание количества" },
+    { pk: 5, title: "Счёт до 100" },
+    { pk: 6, title: "Сложение и вычитание до 20" },
+    { pk: 10, title: "Сложение и вычитание до 100" },
+    { pk: 11, title: "Умножение и деление" },
+    { pk: 16, title: "Дроби" },
+    { pk: 17, title: "Десятичные дроби" },
+    { pk: 20, title: "Операции с дробями" },
+    { pk: 22, title: "Пропорции и отношения" },
+    { pk: 24, title: "Простые алгебраические выражения" },
+    { pk: 25, title: "Линейные уравнения" },
+    { pk: 29, title: "Теорема Пифагора" },
+    { pk: 30, title: "Квадратные корни" },
+    { pk: 32, title: "Факторизация многочленов" },
+    { pk: 33, title: "Функции" },
+    { pk: 36, title: "Квадратные уравнения" },
+    { pk: 37, title: "Формула решения квадратного уравнения" },
+    { pk: 38, title: "Тригонометрические отношения" },
+    { pk: 42, title: "Показательные функции" },
+    { pk: 44, title: "Логарифмы" },
+    { pk: 46, title: "Прогрессии" },
+    { pk: 48, title: "Логарифмические уравнения" },
+    { pk: 45, title: "Тригонометрические тождества" },
+    { pk: 49, title: "Тригонометрические уравнения" },
+    { pk: 50, title: "Производная" },
+];
 
-    const [data, setData] = useState(null);
+const edges = [
+    { parent: 0, child: 1 },
+    { parent: 1, child: 5 },
+    { parent: 5, child: 6 },
+    { parent: 6, child: 10 },
+    { parent: 10, child: 11 },
+    { parent: 11, child: 16 },
+    { parent: 16, child: 17 },
+    { parent: 17, child: 20 },
+    { parent: 20, child: 22 },
+    { parent: 22, child: 24 },
+    { parent: 24, child: 25 },
+    { parent: 25, child: 29 },
+    { parent: 25, child: 30 },
+    { parent: 30, child: 32 },
+    { parent: 32, child: 33 },
+    { parent: 33, child: 36 },
+    { parent: 36, child: 37 },
+    { parent: 37, child: 38 },
+    { parent: 38, child: 42 },
+    { parent: 42, child: 44 },
+    { parent: 44, child: 46 },
+    { parent: 44, child: 48 },
+    { parent: 38, child: 45 },
+    { parent: 45, child: 49 },
+    { parent: 37, child: 50 },
+];
 
-    // Загрузка данных с сервера
+const CytoscapeGraph = () => {
+    const cryRef = useRef(null);
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("http://localhost:8000/graph/");
-                if (!response.ok) {
-                    throw new Error(
-                        `Ошибка загрузки данных: ${response.statusText}`
-                    );
-                }
-                const graphData = await response.json();
-                setData(graphData);
-            } catch (error) {
-                console.error("Ошибка:", error);
-            }
-        };
-        fetchData();
-    }, []);
+        if (cryRef.current) {
+            // Инициализация графа
+            const cy = cytoscape({
+                container: cryRef.current,
+                elements: [
+                    ...concepts.map((concept) => ({
+                        data: { id: `n${concept.pk}`, label: concept.title },
+                    })),
+                    ...edges.map((edge) => ({
+                        data: {
+                            source: `n${edge.parent}`,
+                            target: `n${edge.child}`,
+                        },
+                    })),
+                ],
+                style: [
+                    {
+                        selector: "node",
+                        style: {
+                            "background-color": "#007acc",
+                            label: "data(label)",
+                            color: "#fff",
+                            "text-halign": "center",
+                            "text-valign": "center",
+                            "font-size": "10px",
+                            width: "label",
+                            height: "label",
+                            padding: "5px",
+                            shape: "roundrectangle",
+                        },
+                    },
+                    {
+                        selector: "edge",
+                        style: {
+                            width: 2,
+                            "line-color": "#ccc",
+                            "target-arrow-color": "#ccc",
+                            "target-arrow-shape": "triangle",
+                            "arrow-scale": 1,
+                        },
+                    },
+                ],
+                layout: {
+                    name: "dagre", // Можно использовать 'dagre', 'breadthfirst', 'cose' и др.
+                    rankDir: "LR", // направление (лево-направо)
+                    nodeSep: 50,
+                    rankSep: 100,
+                },
+            });
 
-    // Инициализация Cytoscape после того, как данные загружены
-    useEffect(() => {
-        if (!data) return; // Ждем, пока данные не загрузятся
-
-        if (cyRef.current) {
-            // Если экземпляр уже существует, уничтожаем и пересоздаем
-            cyRef.current.destroy();
+            // Можно добавить реакцию на события, зум, панораму:
+            cy.on("tap", "node", (evt) => {
+                const node = evt.target;
+                console.log(`Clicked node: ${node.data("label")}`);
+            });
         }
-
-        // Преобразование данных в формат Cytoscape
-        // Предполагается, что data.nodes - массив объектов с 'pk' и 'title'
-        // data.edges - массив объектов с 'parent', 'child'
-        const elements = [
-            ...data.nodes.map((node) => ({
-                data: {
-                    id: node.pk.toString(),
-                    label: node.title,
-                    fullData: node,
-                },
-            })),
-            ...data.edges.map((edge) => ({
-                data: {
-                    source: edge.parent.toString(),
-                    target: edge.child.toString(),
-                    fullData: edge,
-                },
-            })),
-        ];
-
-        // Инициализация Cytoscape
-        const cy = cytoscape({
-            container: containerRef.current,
-            elements,
-            style: [
-                {
-                    selector: "node",
-                    style: {
-                        shape: "round-rectangle",
-                        width: "label",
-                        height: "label",
-                        padding: "10px",
-                        "background-color": "#0074D9",
-                        color: "#fff",
-                        "text-wrap": "wrap",
-                        "text-max-width": "180px",
-                        "text-valign": "center",
-                        "text-halign": "center",
-                        content: "data(label)",
-                        "font-size": "12px",
-                    },
-                },
-                {
-                    selector: "edge",
-                    style: {
-                        "line-color": "#000",
-                        width: 2,
-                        "target-arrow-color": "#000",
-                        "target-arrow-shape": "triangle",
-                        "curve-style": "bezier",
-                    },
-                },
-            ],
-            layout: {
-                name: "dagre", // Если хотите иерархический макет, можно использовать dagre
-                rankDir: "LR", // Направление (LR, TB, RL, BT)
-                align: "UR",
-            },
-            wheelSensitivity: 0.2, // чувствительность масштабирования колесиком
-            minZoom: 0.1,
-            maxZoom: 4,
-        });
-
-        cyRef.current = cy;
-
-        // Включить панорамирование/масштабирование из коробки уже работает
-        // по умолчанию, достаточно крутить колесико и перетаскивать фон
-
-        // Обработка клика по узлу
-        cy.on("tap", "node", (event) => {
-            const nodeData = event.target.data();
-            console.log("Клик по узлу:", nodeData);
-        });
-
-        // Обработка клика по ребру
-        cy.on("tap", "edge", (event) => {
-            const edgeData = event.target.data();
-            console.log("Клик по ребру:", edgeData);
-        });
-
-        // Возможность добавления узлов по клику на пустую область
-        // Например, при двойном клике на фон можно добавить новый узел
-        cy.on("tap", (event) => {
-            if (event.target === cy) {
-                // Клик по пустому месту
-                console.log(
-                    "Клик по пустой области: можно создать новый узел."
-                );
-                // Пример добавления нового узла:
-                // const pos = event.position;
-                // cy.add({
-                //   group: 'nodes',
-                //   data: { id: 'newNode', label: 'Новый узел' },
-                //   position: { x: pos.x, y: pos.y }
-                // });
-            }
-        });
-
-        // Пример редактирования узла:
-        // node.data('label', 'Новое имя');
-        // cy.layout({ name: 'dagre' }).run(); // Перерасчет макета при необходимости
-    }, [data]);
+    }, []);
 
     return (
         <div
-            style={{
-                width: "800px",
-                height: "600px",
-                border: "1px solid #ccc",
-            }}
-        >
-            <div style={{ marginBottom: "10px" }}>
-                {/* Здесь можно разместить UI для фильтров, редактирования, кнопки создания узлов */}
-            </div>
-            <div
-                ref={containerRef}
-                style={{ width: "100%", height: "100%" }}
-            ></div>
-        </div>
+            style={{ width: "100%", height: "600px", border: "1px solid #ccc" }}
+            ref={cryRef}
+        ></div>
     );
-}
+};
 
-export default GraphComponent;
+export default CytoscapeGraph;
