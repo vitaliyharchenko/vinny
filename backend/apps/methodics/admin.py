@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject, Concept, ClassFromTag
+from .models import Subject, Concept, ClassFromTag, ConceptRelation
 
 # Register your models here.
 
@@ -8,6 +8,12 @@ from .models import Subject, Concept, ClassFromTag
 class ConceptAdmin(admin.ModelAdmin):
     search_fields = ["title__icontains"]
     autocomplete_fields = ['subjects']
+    search_help_text = "Поиск по названиям концептов"
+
+
+@admin.register(ConceptRelation)
+class ConceptRelationAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['parent', 'child']
     search_help_text = "Поиск по названиям концептов"
 
 

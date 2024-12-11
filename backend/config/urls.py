@@ -25,6 +25,7 @@ urlpatterns = [
 
     # Apps
     path('api/', include('apps.api.urls')),
+    path('methodics/', include('apps.methodics.urls')),
 
     # Modules
     path('ckeditor/', include('ckeditor_uploader.urls')),

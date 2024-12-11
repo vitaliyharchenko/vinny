@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Генерация графа</title>
+    </head>
+    <body>
+        <h1>Генерация графа концептов</h1>
+        <form id="generate-form" method="POST">
+            {% csrf_token %}
+            <textarea
+                name="query"
+                id="query"
+                rows="5"
+                style="width: 100%"
+                placeholder="Введите запрос для генерации..."
+            ></textarea
+            ><br />
+            <button type="submit">Сгенерировать</button>
+        </form>
+        <hr />
+        <h2>Результат:</h2>
+        <div id="result"></div>
+
+        <script>
+            document.getElementById("generate-form").onsubmit = async (e) => {
+                e.preventDefault();
+                const query = document.getElementById("query").value;
+                const resultDiv = document.getElementById("result");
+
+                const response = await fetch("", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": document.querySelector(
+                            "[name=csrfmiddlewaretoken]"
+                        ).value,
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: new URLSearchParams({ query }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<pre>${data.content}</pre>`;
+                } else {
+                    const error = await response.json();
+                    resultDiv.innerHTML = `<p style="color: red;">Ошибка: ${error.error}</p>`;
+                }
+            };
+        </script>
+    </body>
+</html>

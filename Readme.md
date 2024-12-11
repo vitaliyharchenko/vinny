@@ -22,6 +22,7 @@ docker-compose up --build
 
 docker-compose exec backend python manage.py migrate
 docker-compose exec backend python manage.py collectstatic
+docker-compose exec backend bash
 
 # Доступ к приложению
 

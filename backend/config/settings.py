@@ -187,3 +187,8 @@ CELERY_TIMEZONE = 'UTC'
 # Custom user model
 
 AUTH_USER_MODEL = 'users.User'
+
+
+# OpenAI
+
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
